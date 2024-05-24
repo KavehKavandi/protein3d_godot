@@ -1,0 +1,38 @@
+[gd_scene load_steps=5 format=3 uid="uid://dajfq0bi5rucm"]
+
+[ext_resource type="Script" path="res://Main.gd" id="1_tfmsm"]
+[ext_resource type="PackedScene" uid="uid://yd10inpdkt0c" path="res://CameraGimbal.tscn" id="3_sda3v"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xad30"]
+size = Vector3(60, 2, 60)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ur76m"]
+size = Vector3(60, 2, 60)
+
+[node name="Main" type="Node"]
+script = ExtResource("1_tfmsm")
+
+[node name="Ground" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+shape = SubResource("BoxShape3D_xad30")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
+mesh = SubResource("BoxMesh_ur76m")
+
+[node name="CameraPivot" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 0, 0)
+visible = false
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.438371, 0.898794, 0, -0.898794, 0.438371, 0, 23, 0)
+shadow_enabled = true
+
+[node name="NewAtomTimer" type="Timer" parent="."]
+wait_time = 0.1
+autostart = true
+
+[node name="CameraGimbal" parent="." instance=ExtResource("3_sda3v")]
+
+[connection signal="timeout" from="NewAtomTimer" to="." method="_on_new_atom_timer_timeout"]

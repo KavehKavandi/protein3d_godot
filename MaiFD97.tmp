@@ -1,0 +1,111 @@
+[gd_scene load_steps=8 format=3 uid="uid://dajfq0bi5rucm"]
+
+[ext_resource type="Script" path="res://Main.gd" id="1_tfmsm"]
+[ext_resource type="FontFile" uid="uid://cktgn8w8kvu82" path="res://fonts/Montserrat-Medium.ttf" id="3_fp2tu"]
+[ext_resource type="PackedScene" uid="uid://yd10inpdkt0c" path="res://CameraGimbal.tscn" id="3_sda3v"]
+
+[sub_resource type="Theme" id="Theme_i01cj"]
+default_font = ExtResource("3_fp2tu")
+default_font_size = 30
+
+[sub_resource type="Theme" id="Theme_q6c6g"]
+default_font = ExtResource("3_fp2tu")
+default_font_size = 30
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xad30"]
+size = Vector3(60, 2, 60)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ur76m"]
+size = Vector3(60, 2, 60)
+
+[node name="Main" type="Node"]
+script = ExtResource("1_tfmsm")
+
+[node name="UserInterface" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme = SubResource("Theme_i01cj")
+
+[node name="ProteinLabel" type="Label" parent="UserInterface"]
+layout_mode = 0
+offset_left = 33.0
+offset_top = 28.0
+offset_right = 110.0
+offset_bottom = 66.0
+text = "----"
+
+[node name="UserInterfaceStart" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_q6c6g")
+
+[node name="Start" type="ColorRect" parent="UserInterfaceStart"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.376471)
+
+[node name="StartButton" type="Button" parent="UserInterfaceStart"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -41.0
+offset_top = -112.0
+offset_right = 41.0
+offset_bottom = -66.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Start"
+
+[node name="ProteinCode" type="TextEdit" parent="UserInterfaceStart"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -108.5
+offset_top = -185.0
+offset_right = 108.5
+offset_bottom = -135.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "1hsg"
+placeholder_text = "PDB ID"
+
+[node name="Ground" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+visible = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+shape = SubResource("BoxShape3D_xad30")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
+mesh = SubResource("BoxMesh_ur76m")
+
+[node name="CameraPivot" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 0, 0)
+visible = false
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.438371, 0.898794, 0, -0.898794, 0.438371, 0, 23, 0)
+
+[node name="NewAtomTimer" type="Timer" parent="."]
+wait_time = 0.2
+
+[node name="CameraGimbal" parent="." instance=ExtResource("3_sda3v")]
+
+[connection signal="pressed" from="UserInterfaceStart/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="timeout" from="NewAtomTimer" to="." method="_on_new_atom_timer_timeout"]
